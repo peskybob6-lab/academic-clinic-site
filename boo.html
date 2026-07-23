@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Upload Book - AGORI ACADEMIC CLINIC</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .upload-container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      width: 350px;
+      text-align: center;
+    }
+    h2 { margin-bottom: 20px; color: #007bff; }
+    .upload-container input {
+      display: block;
+      width: 90%;
+      margin: 10px auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+      text-align: left;
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .upload-container button {
+      width: 95%;
+      padding: 12px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 20px;
+    }
+    .upload-container button:hover { background-color: #0056b3; }
+    .back-btn {
+      display: inline-block;
+      margin-top: 15px;
+      background-color: #ff5722;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .back-btn:hover { background-color: #e64a19; }
+  </style>
+</head>
+<body>
+  <div class="upload-container">
+    <h2>Upload New Book</h2>
+    <input type="text" id="title" placeholder="Book Title">
+    <input type="number" id="price" placeholder="Price">
+    <label for="cover">Choose Cover Page:</label>
+    <input type="file" id="cover" type="image">
+    <label for="pdf">Choose PDF File:</label>
+    <input type="file" id="pdf">
+    <button id="uploadBtn">Upload</button>
+    <a href="dashboard.html" class="back-btn">⟵ Back to Dashboard</a>
+  </div>
+  
+  
+  <script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+  // ✅ Supabase client
+  const supabase = createClient(
+    "https://fomowfqnswrsvuwzxmix.supabase.co",
+    "sb_publishable_gB87Pwod8O3jMTAqixq4TQ_fqJKGVb1"
+  );
+
+  // ✅ Check Supabase Auth session
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session) {
+    alert("You must log in first!");
+    window.location.href = "login.html";
+  }
+
+  // ✅ Upload button logic
+  document.getElementById("uploadBtn").onclick = async () => {
+    const title = document.getElementById("title").value;
+    const price = document.getElementById("price").value;
+    const coverFile = document.getElementById("cover").files[0];
+    const pdfFile = document.getElementById("pdf").files[0];
+
+    if (!title || !price || !coverFile || !pdfFile) {
+      alert("Please fill all fields and select files.");
+      return;
+    }
+
+    try {
+      // Upload cover
+      const coverPath = `covers/${Date.now()}_${coverFile.name}`;
+      const { error: coverError } = await supabase.storage
+        .from("ebooks")
+        .upload(coverPath, coverFile);
+      if (coverError) throw coverError;
+
+      // Upload PDF
+      const pdfPath = `pdfs/${Date.now()}_${pdfFile.name}`;
+      const { error: pdfError } = await supabase.storage
+        .from("ebooks")
+        .upload(pdfPath, pdfFile);
+      if (pdfError) throw pdfError;
+
+      // ✅ Save metadata in Supabase table "books"
+      // Store only file names so index.js can generate public URLs
+      const { error } = await supabase.from("books").insert({
+        title,
+        price,
+        coverFileName: coverPath.replace("covers/", ""),
+        pdfFileName: pdfPath.replace("pdfs/", "")
+      });
+      if (error) throw error;
+
+      alert("Book uploaded successfully!");
+    } catch (err) {
+      alert("Error: " + err.message);
+      console.error("Upload error:", err);
+    }
+  };
+</script>
+</body>
+</html>

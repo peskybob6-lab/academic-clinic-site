@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Frequently Asked Questions - Dr AGORI Academic</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fb;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      border-bottom: 4px solid #0056b3;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .faq-item {
+      margin-bottom: 20px;
+      border-left: 6px solid #007bff;
+      background-color: #f9fbff;
+      border-radius: 6px;
+      padding: 15px;
+    }
+
+    .faq-item h3 {
+      margin: 0;
+      color: #0056b3;
+      cursor: pointer;
+    }
+
+    .faq-item p {
+      display: none;
+      margin-top: 10px;
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background-color: #007bff;
+      color: white;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Frequently Asked Questions</h1>
+    <p>Dr. AGORI Academic Clinic</p>
+  </header>
+
+  <div class="container">
+    <div class="faq-item">
+      <h3>1. Do I need to pay before downloading an ebook?</h3>
+      <p>Yes. All ebooks require payment before you can download or read them. Unauthorized access attempts will result in account suspension.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>2. How do I make a payment?</h3>
+      <p>Payments are processed securely through Paystack. Simply click the “Buy Ebook” button and complete the checkout process.</p>
+    </div>
+
+   <div class="faq-item">
+  <h3>3. What happens after I pay?</h3>
+  <p>After successful payment, you will be redirected to a download page.</p>
+</div>
+
+<div class="faq-item">
+  <h3>4.Important Notice</h3>
+  <p>Once redirected, you must download your book immediately. If you miss this step, you will not be able to access it again.</p>
+</div>
+
+    <div class="faq-item">
+      <h3>5. Can I get a refund?</h3>
+      <p>Due to the digital nature of ebooks, refunds are generally not available once the file has been accessed. Please review carefully before purchase.</p>
+    </div>
+
+    <div class="faq-item">
+      <h3>6. How do I contact support?</h3>
+      <p>You can reach us via email at <a href="mailto:agoriacademic@gmail.com">agoriacademic@gmail.com</a> or WhatsApp at <a href="https://wa.me/2348136675245">+2348136675245</a>.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 AGORI Academic Clinic. All Rights Reserved.</p>
+
+
+  </footer>
+
+  <script>
+    // Simple toggle for FAQ answers
+    document.querySelectorAll('.faq-item h3').forEach(item => {
+      item.addEventListener('click', () => {
+        const answer = item.nextElementSibling;
+        answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+  </script>
+<a href="index.html" style="color: red; border: 1px solid red; padding: 5px; text-decoration: none;">
+  GO BACK TO HOME PAGE
+</a>
+
+</body>
+</html>

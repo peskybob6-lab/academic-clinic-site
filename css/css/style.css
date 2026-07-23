@@ -1,0 +1,258 @@
+body {
+      background-color: #fafafa;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding-bottom: 60px; /* space for footer */
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    header img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 5px;
+      margin-left: 0px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    /* Menu button */
+    .menu-btn {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    /* Search bar */
+    #searchBar {
+      text-align: center;
+      margin: 20px;
+    }
+    #searchInput {
+      width: 60%;
+      padding: 10px;
+      border: 2px solid #007bff;
+      border-radius: 8px;
+    }
+    #searchBtn {
+      padding: 10px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+    #searchBtn:hover {
+      background-color: #0056b3;
+    }
+
+    /* Navigation drawer */
+    .drawer {
+      position: fixed;
+      top: 0;
+      left: -250px; /* hidden by default */
+      width: 250px;
+      height: 100%;
+      background-color: #333;
+      color: white;
+      padding-top: 60px;
+      transition: left 0.3s ease;
+      z-index: 1000;
+    }
+    .drawer a {
+      display: block;
+      padding: 12px;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid #444;
+    }
+    .drawer a:hover {
+      background-color: #444;
+    }
+
+    /* Books grid */
+    #booksList {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* always 4 per row */
+      gap: 15px;
+      margin: 20px;
+    }
+    .book-card {
+      background: white;
+      border: 2px solid #007bff;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .book-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+    .book-card h3 {
+      margin: 10px 0;
+      font-size: 16px;
+      color: #333;
+    }
+    .book-card p {
+      font-size: 14px;
+      color: #555;
+    }
+    .buy-btn {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    .buy-btn:hover {
+      background-color: #218838;
+    }
+
+    /* Footer pinned bottom */
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+    }
+    footer p {
+      margin: 5px 0;
+    }
+    footer a {
+      color: #ffeb3b;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    .footer-links{
+      text-align: center;
+      
+    }
+    /* Responsive design */
+@media (max-width: 768px) {
+  #booksList {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row on tablets */
+  }
+  header h1 {
+    font-size: 1.2em;
+  }
+}
+
+@media (max-width: 480px) {
+  #booksList {
+    grid-template-columns: 1fr; /* 1 per row on phones */
+  }
+  header h1 {
+    font-size: 1em;
+  }
+  #searchInput {
+    width: 95%; /* search bar fits phone width */
+  }
+}
+
+
+.search-wrapper {
+  display: flex;
+  justify-content: center; /* keeps them together in the middle */
+  gap: 8px; /* space between input and button */
+}
+
+#searchInput {
+  flex: 1; /* input takes most of the width */
+  max-width: 400px; /* optional limit */
+}
+
+#searchBtn {
+  flex-shrink: 0; /* button stays next to input */
+}
+
+
+
+footer {
+  background-color: #007bff;
+  color: white;
+  padding: 20px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: flex-start; /* align items to the left */
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.footer-links {
+  text-align: left; /* ensures vertical alignment */
+}
+
+.footer-links p {
+  margin: 5px 0;
+}
+
+
+
+footer {
+  background-color: #007bff;
+  color: white;
+  padding: 6px;      /* smaller padding */
+  margin-top: 10px;  /* less margin above footer */
+  font-size: 14px;   /* slightly smaller text */
+}
+
+footer a {
+  color: yellow;     /* keep your link color */
+  text-decoration: none;
+  font-weight: normal; /* lighter weight so text looks slimmer */
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+.footer-links p,
+footer p {
+  margin: 1px 0;     /* minimal vertical spacing */
+  line-height: 1.1;  /* tighter line spacing */
+}
+button:hover{
+  background-color: orangered;
+}

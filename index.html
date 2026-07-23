@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DR. AGORI ACADEMIC CLINIC</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Link to external CSS -->
+  <link rel="stylesheet" href="css/css/style.css">
+   <!-- Viewport for mobile responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+</head>
+<body>
+  <header>
+    <span class="menu-btn" onclick="toggleDrawer()">☰</span>
+    <img src="image.png" alt="Logo">
+    <h1>DR. AGORI ACADEMIC CLINIC</h1>
+  </header>
+
+  <!-- Search bar -->
+  <div id="searchBar">
+  <div class="search-wrapper">
+    <input type="text" id="searchInput" placeholder="Search for a book...">
+    <button id="searchBtn">Search</button>
+  </div>
+</div>
+
+
+  <!-- Navigation drawer -->
+<div id="drawer" class="drawer">
+  <a href="help.html">Need Help</a>
+  <a href="create-account.html">Create Account</a>
+  <a href="login.html">Login</a>
+  <a href="chat.html">Chat with Us</a>
+  <a href="contact.html">Contact</a>
+  <a href="my-account.html">My  Dr.  Agori  Academic Clinic  Account</a>
+
+  <div style="padding:12px; font-size:14px;">
+  
+    <button onclick="logout()">Logout</button>
+  </div>
+</div>
+
+
+  <!-- Books grid -->
+  <div id="booksList"></div>
+
+  <!-- Footer -->
+<footer>
+  <p><a href="https://facebook.com/ClementAgori" target="_blank">Facebook @Clement Agori</a></p>
+  <p><a href="https://youtube.com/@ClementAgori" target="_blank">Youtube @Clement Agori</a></p>
+<br>
+  <!-- New vertical links -->
+  <div class="footer-links">
+  <p><a href="Frequently-Asked-Questions.html" style="color: yellow;">Frequently Asked Questions</a></p>
+  <p><a href="Terms-of-Use.html" style="color: yellow;">Terms of Use</a></p>
+  <p><a href="Privacy-Policy.html" style="color: yellow;">Privacy Policy</a></p>
+  <p><a href="Contact-Us.html" style="color: yellow;">Contact Us</a></p>
+</div>
+
+  <p>©2026 Dr. Agori Academic Clinic</p>
+</footer>
+  
+
+
+<!-- Paystack inline script -->
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<script type="module" src="javascript/index.js"></script>
+
+</body>
+</html>
