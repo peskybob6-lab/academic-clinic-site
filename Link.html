@@ -1,118 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>DR. AGORI ACADEMIC CLINIC</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #f0f4f8, #d9e2ec);
-      color: #333;
-      margin: 0;
-      padding: 20px;
-    }
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DR. AGORI ACADEMIC CLINIC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link rel="stylesheet" href="css/css/link.css"/>
+   
+ </head>
+  <body>
+    <h1>Uploaded Book Links</h1>
+    <div id="links"></div>
 
-    h1 {
-      text-align: center;
-      color: #0056b3;
-      margin-bottom: 30px;
-    }
+        <footer>
+      <a href="dashboard.html">← Go Back to Dashboard</a>
+    </footer>
 
-    .link-item {
-      margin: 15px 0;
-      padding: 15px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      background: #fff;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    button {
-      margin-left: 10px;
-      background: #007BFF;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #0056b3;
-    }
-
-    img {
-      max-width: 120px;
-      display: block;
-      margin-top: 5px;
-      border-radius: 4px;
-    }
-
-    /* Footer styling */
-    footer {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-    }
-    footer a {
-      text-decoration: none;
-      color: #007BFF;
-      font-weight: bold;
-    }
-    footer a:hover {
-      cursor: pointer;
-      color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <h1>Uploaded Book Links</h1>
-  <div id="links"></div>
-
-  <script type="module">
-    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-    // ✅ Supabase client
-    const supabase = createClient(
-      "https://fomowfqnswrsvuwzxmix.supabase.co",
-      "sb_publishable_gB87Pwod8O3jMTAqixq4TQ_fqJKGVb1"
-    );
-
-    async function loadLinks() {
-      // Fetch all books
-      const { data: books, error } = await supabase.from("books").select("*");
-      if (error) {
-        console.error("Error loading books:", error);
-        return;
-      }
-
-      const container = document.getElementById("links");
-      container.innerHTML = "";
-
-      books.forEach(book => {
-        // Generate public cover URL
-        const coverUrl = supabase.storage.from("ebooks").getPublicUrl("covers/" + book.coverFileName).data.publicUrl;
-
-        // Build link item pointing to index.html with bookId
-        const div = document.createElement("div");
-        div.className = "link-item";
-        div.innerHTML = `
-          <strong>${book.title}</strong> - ₦${book.price}
-          <br>
-          <img src="${coverUrl}" alt="Cover">
-          <br>
-          <a href="index.html?bookId=${book.id}" target="_blank">View Book</a>
-          <button onclick="navigator.clipboard.writeText('index.html?bookId=${book.id}')">Copy # Link</button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    loadLinks();
-  </script>
-
-  <!-- Footer link -->
-  <footer>
-    <a href="dashboard.html">Go Back to Dashboard</a>
-  </footer>
-</body>
+     <script type="module" src="javascript/link.js"></script>
+  </body>
 </html>

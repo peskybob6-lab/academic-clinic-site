@@ -1,197 +1,23 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Customer Management - AGORI ACADEMIC CLINIC</title>
-   <!-- Viewport for mobile responsiveness -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background-color: #f4f4f4;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+  <head>
+    <title>Customer Management - AGORI ACADEMIC CLINIC</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/css/customer-management.css" />
+  </head>
+  <body>
+    <h2>Customer Management</h2>
 
-    h2 {
-      text-align: center;
-      background-color: #007bff;
-      color: white;
-      padding: 15px;
-      margin: 0;
-      border-bottom: 4px solid #0056b3;
-    }
+    <a href="dashboard.html" class="back-btn">⟵ Back to Dashboard</a>
 
-    #searchBar {
-      display: block;
-      margin: 20px auto;
-      max-width: 400px;
-      padding: 10px;
-      border: 2px solid #007bff;
-      border-radius: 6px;
-      font-size: 16px;
-    }
+    <input
+      type="text"
+      id="searchBar"
+      placeholder="Search by name or email..."
+    />
 
-    #customersList {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 10px;
-    }
+    <div id="customersList"></div>
 
-    .customer-card {
-      background: white;
-      border: 2px solid #007bff;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-
-    .customer-card p {
-      margin: 5px 0;
-      font-size: 15px;
-    }
-
-    .customer-card strong {
-      color: #333;
-    }
-
-    .customer-card button {
-      background-color: #ff5722;
-      color: white;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 10px;
-    }
-
-    .customer-card button:hover {
-      background-color: #e64a19;
-    }
-
-    /* Back to Dashboard button */
-    .back-btn {
-      display: inline-block;
-      margin: 15px;
-      background-color: #007bff;
-      color: white;
-      padding: 8px 14px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .back-btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <h2>Customer Management</h2>
-
-  <!-- Back to Dashboard button -->
-  <a href="dashboard.html" class="back-btn">⟵ Back to Dashboard</a>
-
-  <!-- Search bar -->
-  <input type="text" id="searchBar" placeholder="Search by name or email...">
-
-  <div id="customersList"></div>
-
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-  // ✅ Supabase client
-  const supabase = createClient(
-    "https://fomowfqnswrsvuwzxmix.supabase.co",   // Project URL
-    "sb_publishable_gB87Pwod8O3jMTAqixq4TQ_fqJKGVb1" // Publishable key
-  );
-
-  let allCustomers = [];
-
-  // Load customers from Supabase
-  async function loadCustomers() {
-    const customersList = document.getElementById("customersList");
-    customersList.innerHTML = "";
-
-    const { data, error } = await supabase
-      .from("customers")
-      .select("*");
-
-    if (error) {
-      console.error("Error loading customers:", error.message);
-      return;
-    }
-
-    allCustomers = data;
-    renderCustomers(allCustomers);
-  }
-
-  // Render customers (with optional filter)
-  function renderCustomers(customers) {
-    const customersList = document.getElementById("customersList");
-    customersList.innerHTML = "";
-
-    customers.forEach(customer => {
-      const custDiv = document.createElement("div");
-      custDiv.className = "customer-card";
-      custDiv.innerHTML = `
-        <p><strong>Name:</strong> ${customer.first_name} ${customer.last_name}</p>
-        <p><strong>Email:</strong> ${customer.email}</p>
-        <p><strong>Phone:</strong> ${customer.phone_number || "N/A"}</p>
-        <p><strong>Gender:</strong> ${customer.gender || "N/A"}</p>
-        <p><strong>Created At:</strong> ${customer.created_at}</p>
-        <p><strong>Status:</strong> ${customer.status || "Active"}</p>
-        <button onclick="toggleBlock('${customer.id}', '${customer.status || "Active"}')">
-          ${customer.status === "Blocked" ? "Unblock" : "Block"}
-        </button>
-      `;
-      customersList.appendChild(custDiv);
-    });
-  }
-
-  // Block/Unblock customer
-  window.toggleBlock = async function(customerId, currentStatus) {
-    const newStatus = currentStatus === "Blocked" ? "Active" : "Blocked";
-
-    const { error } = await supabase
-      .from("customers")
-      .update({ status: newStatus })
-      .eq("id", customerId);
-
-    if (error) {
-      alert("Error updating customer: " + error.message);
-    } else {
-      alert("Customer status updated to " + newStatus);
-      loadCustomers();
-    }
-  };
-
-  // Search filter
-  document.getElementById("searchBar").addEventListener("input", function(e) {
-    const query = e.target.value.toLowerCase();
-    const filtered = allCustomers.filter(c =>
-      (c.first_name + " " + c.last_name).toLowerCase().includes(query) ||
-      (c.email || "").toLowerCase().includes(query)
-    );
-    renderCustomers(filtered);
-  });
-
-  // Load customers on page start
-  loadCustomers();
-
-  window.deleteCustomer = async function(customerId) {
-  const { error } = await supabase.from("customers").delete().eq("id", customerId);
-  if (error) {
-    alert("Error deleting customer: " + error.message);
-  } else {
-    alert("Customer deleted");
-    loadCustomers();
-  }
-};
-
-
-const { data } = await supabase.from("customers").select("*").order("created_at", { ascending: false });
-
-</script>
-</body>
+    <script type="module" src="javascript/customer-management.js"></script>
+  </body>
 </html>

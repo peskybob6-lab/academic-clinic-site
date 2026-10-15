@@ -1,165 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>AGORI ACADEMIC CLINIC - Dashboard</title>
-   <!-- Viewport for mobile responsiveness -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background-color: #f4f4f4;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+  <head>
+    <title>AGORI ACADEMIC CLINIC - Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link rel="stylesheet" href="css/css/dashboard.css"/>
+    </head>
+  <body>
+    <h2>Dashboard Overview</h2>
 
-    h2 {
-      text-align: center;
-      background-color: #007bff;
-      color: white;
-      padding: 15px;
-      border-bottom: 4px solid #0056b3;
-      margin: 0;
-      position: relative;
-    }
+    <nav>
+      <a href="boo.html">Upload Books</a>
+      <a href="edit-books.html">Edit Books</a>
+      <a href="delete-books.html">Delete Books</a>
+      <a href="orders.html">Orders</a>
+      <a href="payment-history.html">Payment History</a>
+      <a href="live-chat.html">Live Chat</a>
+      <a href="customers-management.html">Customers</a>
+      <a href="Link.html">Book Links</a>
+    </nav>
 
-    /* Logout button */
-    .logout-btn {
-      position: absolute;
-      right: 20px;
-      top: 15px;
-      background-color: #ff5722;
-      color: white;
-      padding: 8px 14px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .logout-btn:hover {
-      background-color: #e64a19;
-    }
+    <div id="stats">
+      <p><strong>Total Books:</strong> <span id="totalBooks">0</span></p>
+      <p><strong>Total Orders:</strong> <span id="totalOrders">0</span></p>
+      <p>
+        <strong>Total Customers:</strong> <span id="totalCustomers">0</span>
+      </p>
+      <p><strong>Total Revenue:</strong> ₦<span id="totalRevenue">0</span></p>
+    </div>
 
-    nav {
-      background-color: #333;
-      padding: 10px;
-      text-align: center;
-      border-bottom: 3px solid #222;
-    }
-    nav a {
-      color: #fff;
-      margin: 0 10px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    nav a:hover {
-      color: #ffeb3b;
-    }
-
-    #stats {
-      display: flex;
-      justify-content: space-around;
-      margin: 20px auto;
-      max-width: 900px;
-    }
-    #stats p {
-      flex: 1;
-      margin: 10px;
-      padding: 20px;
-      background-color: #fff;
-      border: 2px solid #007bff;
-      border-radius: 8px;
-      text-align: center;
-      font-size: 16px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    #stats span {
-      display: block;
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 8px;
-      color: #007bff;
-    }
-  </style>
-</head>
-<body>
-  <h2>
-    Dashboard Overview
-    <button class="logout-btn" id="logoutBtn">Logout</button>
-  </h2>
-
-  <nav>
-    <a href="boo.html">Upload Books</a> |
-    <a href="edit-books.html">Edit Books</a> |
-    <a href="delete-books.html">Delete Books</a> |
-    <a href="orders.html">Orders</a> |
-    <a href="payment-history.html">Payment History</a> |
-    <a href="live-chat.html">Live Chat</a> |
-    <a href="customers-management.html">Customers</a>
-    <a href="Link.html">Book Links</a>
-
-  </nav>
-
-  <div id="stats">
-    <p><strong>Total Books:</strong> <span id="totalBooks">0</span></p>
-    <p><strong>Total Orders:</strong> <span id="totalOrders">0</span></p>
-    <p><strong>Total Customers:</strong> <span id="totalCustomers">0</span></p>
-    <p><strong>Total Revenue:</strong> ₦<span id="totalRevenue">0</span></p>
-  </div>
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-  // ✅ Supabase client
-  const supabase = createClient(
-    "https://fomowfqnswrsvuwzxmix.supabase.co",   // Project URL
-    "sb_publishable_gB87Pwod8O3jMTAqixq4TQ_fqJKGVb1" // Publishable key
-  );
-
-  async function loadStats() {
-    // Books count
-    const { count: booksCount, error: booksError } = await supabase
-      .from("books")
-      .select("*", { count: "exact", head: true });
-    if (!booksError) {
-      document.getElementById("totalBooks").innerText = booksCount;
-    }
-
-    // Orders count + revenue
-    const { data: orders, error: ordersError } = await supabase
-      .from("orders")
-      .select("*");
-    if (!ordersError) {
-      document.getElementById("totalOrders").innerText = orders.length;
-
-      let revenue = 0;
-      orders.forEach(order => {
-        if (order.status === "Paid") {
-          revenue += Number(order.price);
-        }
-      });
-      document.getElementById("totalRevenue").innerText = revenue;
-    }
-
-    // Customers count
-    const { count: customersCount, error: customersError } = await supabase
-      .from("customers")
-      .select("*", { count: "exact", head: true });
-    if (!customersError) {
-      document.getElementById("totalCustomers").innerText = customersCount;
-    }
-  }
-
-  loadStats();
-
-  // ✅ Logout functionality
-  document.getElementById("logoutBtn").onclick = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      alert("Error logging out: " + error.message);
-    } else {
-      alert("Logged out successfully!");
-      window.location.href = "admin2.html"; // redirect to login/register page
-    }
-  };
-</script>
-</body>
+    <footer>
+      <button class="logout-btn" id="logoutBtn">Logout</button>
+    </footer>
+    <script type="module" src="javascript/dashboard.js"></script>
+  </body>
 </html>

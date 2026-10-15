@@ -1,0 +1,107 @@
+ body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+        color: #333;
+        margin: 0;
+        padding: 20px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      h1 {
+        text-align: center;
+        color: #0056b3;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      .link-item {
+        margin: 12px 0;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .link-item strong {
+        font-size: 18px;
+        color: #0056b3;
+      }
+
+      button {
+        margin-left: 10px;
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+
+      img {
+        max-width: 120px;
+        display: block;
+        margin-top: 8px;
+        border-radius: 4px;
+      }
+
+      /* Footer styling */
+      footer {
+        background: #f1f1f1;
+        padding: 12px;
+        text-align: center;
+        margin-top: auto;
+        border-top: 3px solid #007bff;
+      }
+      footer a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        font-size: 14px;
+      }
+      footer a:hover {
+        cursor: pointer;
+        color: #0056b3;
+      }
+
+      /* ✅ Mobile adjustments */
+      @media (max-width: 600px) {
+        body {
+          padding: 10px;
+        }
+        h1 {
+          font-size: 20px;
+          margin-bottom: 15px;
+        }
+        .link-item {
+          padding: 12px;
+          font-size: 14px;
+        }
+        .link-item strong {
+          font-size: 16px;
+        }
+        img {
+          max-width: 100px;
+        }
+        button {
+          font-size: 13px;
+          padding: 5px 10px;
+        }
+        footer {
+          padding: 10px;
+          font-size: 12px;
+        }
+        footer a {
+          display: block;
+          margin: 6px auto;
+        }
+      }
+
+ 

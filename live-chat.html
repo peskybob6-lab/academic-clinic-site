@@ -1,227 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Live Chat - AGORI ACADEMIC CLINIC</title>
-   <!-- Viewport for mobile responsiveness -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background-color: #f0f8ff; /* light blue background */
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
+  <head>
+    <title>Live Chat - AGORI ACADEMIC CLINIC</title>
+    <!-- Viewport for mobile responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+   <link rel="stylesheet" href="css/css/live-chat.css"/>
+   
+   
+  </head>
+  <body>
+    <h2>Live Chat</h2>
 
-    h2 {
-      text-align: center;
-      background-color: #007bff;
-      color: white;
-      padding: 15px;
-      margin: 0;
-      border-bottom: 4px solid #0056b3;
-    }
+    <!-- Back to Dashboard button -->
+    <a href="dashboard.html" class="back-btn">⟵ Back to Dashboard</a>
 
-    /* Back to Dashboard button */
-    .back-btn {
-      display: inline-block;
-      margin: 15px;
-      background-color: #007bff;
-      color: white;
-      padding: 8px 14px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .back-btn:hover {
-      background-color: #0056b3;
-    }
+    <!-- Chat messages -->
+    <div id="chatMessages">
+      <!-- Messages will load here -->
+    </div>
 
-    #chatMessages {
-      border: 2px solid #007bff;
-      border-radius: 8px;
-      height: 300px;
-      overflow-y: auto;
-      padding: 10px;
-      margin: 20px auto;
-      max-width: 800px;
-      background: white;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
+    <!-- Reply box -->
+    <div id="replySection">
+      <input type="text" id="replyInput" placeholder="Type reply..." />
+      <button id="sendBtn">Send Reply</button>
+    </div>
 
-    #replySection {
-      text-align: center;
-      margin-top: 10px;
-    }
+     <script type="module" src="javascript/live-chat.js"></script>
 
-    #replyInput {
-      width: 70%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    #sendBtn {
-      padding: 10px 16px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-left: 8px;
-    }
-
-    #sendBtn:hover {
-      background-color: #0056b3;
-    }
-
-    .chat-message {
-      margin: 5px 0;
-      padding: 6px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .chat-message strong {
-      color: #007bff;
-    }
-  </style>
-</head>
-<body>
-  <h2>Live Chat</h2>
-
-  <!-- Back to Dashboard button -->
-  <a href="dashboard.html" class="back-btn">⟵ Back to Dashboard</a>
-
-  <!-- Chat messages -->
-  <div id="chatMessages">
-    <!-- Messages will load here -->
-  </div>
-
-  <!-- Reply box -->
-  <div id="replySection">
-    <input type="text" id="replyInput" placeholder="Type reply...">
-    <button id="sendBtn">Send Reply</button>
-  </div>
-
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
-  // ✅ Supabase client
-  const supabase = createClient(
-    "https://fomowfqnswrsvuwzxmix.supabase.co",   // Project URL
-    "sb_publishable_gB87Pwod8O3jMTAqixq4TQ_fqJKGVb1" // Publishable key
-  );
-
-  // ✅ Load all chat messages
-  async function loadChats() {
-    const chatBox = document.getElementById("chatMessages");
-    chatBox.innerHTML = "";
-
-    const { data, error } = await supabase
-      .from("chats")
-      .select("*")
-      .order("created_at", { ascending: true });
-
-    if (error) {
-      console.error("Error loading chats:", error.message);
-      return;
-    }
-
-    data.forEach(msg => renderMessage(msg));
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  // ✅ Render a single message with action buttons
-  function renderMessage(msg) {
-    const chatBox = document.getElementById("chatMessages");
-    const div = document.createElement("div");
-    div.className = "chat-message";
-  const timestamp = new Date(msg.created_at).toLocaleString();
-div.innerHTML = `<strong>${msg.sender}:</strong> ${msg.message}
-  <div style="font-size:12px; color:#666;">${timestamp}</div>`;
-
-    if (msg.sender === "Admin") {
-      // Admin’s own messages → edit + delete
-      div.innerHTML += `
-        <button onclick="editMessage('${msg.id}', '${msg.message}')">Edit</button>
-        <button onclick="deleteMessage('${msg.id}')">Delete</button>
-      `;
-    } else {
-      // User messages → reply + delete
-      div.innerHTML += `
-        <button onclick="replyTo('${msg.id}', '${msg.sender}')">Reply</button>
-        <button onclick="deleteMessage('${msg.id}')">Delete</button>
-      `;
-    }
-
-    chatBox.appendChild(div);
-  }
-
-  // ✅ Send admin reply
-  async function sendReply() {
-    const reply = document.getElementById("replyInput").value;
-    if (!reply) return;
-
-    const { error } = await supabase.from("chats").insert({
-      sender: "Admin",
-      message: reply
-    });
-
-    if (error) {
-      alert("Error sending reply: " + error.message);
-    } else {
-      document.getElementById("replyInput").value = "";
-    }
-  }
-
-  document.getElementById("sendBtn").onclick = sendReply;
-
-  // ✅ Reply to a specific user (prefill reply box)
-  window.replyTo = function(messageId, sender) {
-    document.getElementById("replyInput").value = `@${sender} `;
-    document.getElementById("replyInput").focus();
-  };
-
-  // ✅ Edit admin message
-  window.editMessage = async function(messageId, oldMessage) {
-    const newMessage = prompt("Edit your message:", oldMessage);
-    if (!newMessage) return;
-
-    const { error } = await supabase
-      .from("chats")
-      .update({ message: newMessage })
-      .eq("id", messageId);
-
-    if (error) {
-      alert("Error editing: " + error.message);
-    } else {
-      loadChats();
-    }
-  };
-
-  // ✅ Delete any message (admin can delete both user + admin messages)
-  window.deleteMessage = async function(messageId) {
-    if (!confirm("Delete this message?")) return;
-
-    const { error } = await supabase
-      .from("chats")
-      .delete()
-      .eq("id", messageId);
-
-    if (error) {
-      alert("Error deleting: " + error.message);
-    } else {
-      loadChats();
-    }
-  };
-
-  // ✅ Subscribe to realtime changes
-  supabase.channel("live-chat")
-    .on("postgres_changes", { event: "*", schema: "public", table: "chats" }, () => loadChats())
-    .subscribe();
-
-  // ✅ Load chats on page start
-  loadChats();
-</script>
-</body>
+  </body>
 </html>

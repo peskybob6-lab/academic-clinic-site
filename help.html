@@ -1,198 +1,26 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Chat - AGORI Academic Clinic</title>
-   <!-- Viewport for mobile responsiveness -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-    }
-
-    /* Overlay background */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 123, 255, 0.85); /* blue overlay */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-    }
-
-    /* Modal box */
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      width: 400px;
-      text-align: center;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      height: 500px;
-    }
-
-    .modal-content h2 {
-      margin-bottom: 10px;
-      color: #007bff;
-    }
-
-    #chatMessages {
-      flex: 1;
-      overflow-y: auto;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 10px;
-      margin-bottom: 10px;
-      text-align: left;
-      background: #fafafa;
-    }
-
-    .chat-message {
-      margin: 5px 0;
-      padding: 8px;
-      border-radius: 6px;
-    }
-    .chat-user {
-      background: #e1f5fe;
-    }
-    .chat-admin {
-      background: #c8e6c9;
-    }
-
-    #chatInput {
-      width: 95%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-
-    .modal-content button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      margin: 5px 0;
-    }
-
-    .modal-content button:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <!-- Chat Modal -->
-  <div id="chatModal" class="modal-overlay">
-    <div class="modal-content">
-      <h2>Chat with Us</h2>
-      <div id="chatMessages"></div>
-      <input type="text" id="chatInput" placeholder="Type your message...">
-      <button onclick="sendChat()">Send</button>
-      <button onclick="goHome()">Close</button>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chat - AGORI Academic Clinic</title>
+    <!-- Viewport for mobile responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link rel="stylesheet" href="css/css/help.css"/>
+   
+   
+  </head>
+  <body>
+    <!-- Chat Modal -->
+    <div id="chatModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Chat with Us</h2>
+        <div id="chatMessages"></div>
+        <input type="text" id="chatInput" placeholder="Type your message..." />
+        <button onclick="sendChat()">Send</button>
+        <button onclick="goHome()">Close</button>
+      </div>
     </div>
-  </div>
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-  // ✅ Supabase client
-  const supabase = createClient(
-    "https://fomowfqnswrsvuwzxmix.supabase.co",   // Project URL
-    "sb_publishable_gB87Pwod8O3jMTAqixq4TQ_fqJKGVb1" // Publishable key
-  );
-
-  // ✅ Track current sender globally
-  let currentSender = "Guest";
-
-  // ✅ Initialize sender and load chat
-  (async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    currentSender = user ? user.email : "Guest";
-    loadChat();
-  })();
-
-  // ✅ Send chat message
-  window.sendChat = async function() {
-    const message = document.getElementById('chatInput').value;
-    if (!message) return;
-
-    const { error } = await supabase.from("chats").insert({
-      sender: currentSender,
-      message: message
-    });
-
-    if (error) {
-      alert("Error sending message: " + error.message);
-    } else {
-      document.getElementById('chatInput').value = "";
-    }
-  };
-
-  // ✅ Load chat messages initially
-  async function loadChat() {
-    const { data, error } = await supabase
-      .from("chats")
-      .select("*")
-      .or(`sender.eq.${currentSender},sender.eq.admin`)
-      .order("created_at", { ascending: true });
-
-    if (error) {
-      console.error("Error loading chat:", error.message);
-      return;
-    }
-
-    renderMessages(data);
-  }
-
-  // ✅ Subscribe to realtime chat updates
-  supabase.channel("help-chat")
-    .on(
-      "postgres_changes",
-      { event: "INSERT", schema: "public", table: "chats" },
-      (payload) => {
-        const newMessage = payload.new;
-        if (newMessage.sender === currentSender || newMessage.sender.toLowerCase() === "admin") {
-          appendMessage(newMessage);
-        }
-      }
-    )
-    .subscribe();
-
-  // ✅ Render messages
-  function renderMessages(messages) {
-    const chatBox = document.getElementById("chatMessages");
-    chatBox.innerHTML = "";
-    messages.forEach(data => {
-      appendMessage(data);
-    });
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  function appendMessage(data) {
-    const chatBox = document.getElementById("chatMessages");
-    const div = document.createElement("div");
-    div.className = "chat-message " + (data.sender.toLowerCase() === "admin" ? "chat-admin" : "chat-user");
-   const timestamp = new Date(data.created_at).toLocaleString();
-div.innerHTML = `<strong>${data.sender}:</strong> ${data.message}
-  <div style="font-size:12px; color:#666;">${timestamp}</div>`;
-
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  // ✅ Close chat → go back to home
-  window.goHome = function() {
-    window.location.href = "index.html";
-  };
-</script>
-</body>
+      <script type="module" src="javascript/help.js"></script>
+     </body>
 </html>

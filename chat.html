@@ -1,216 +1,25 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Chat - AGORI Academic Clinic</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-    }
-
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 123, 255, 0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-    }
-
-    .modal-content {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      width: 400px;
-      text-align: center;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
-      display: flex;
-      flex-direction: column;
-      height: 500px;
-    }
-
-    .modal-content h2 {
-      margin-bottom: 10px;
-      color: #007bff;
-    }
-
-    #chatMessages {
-      flex: 1;
-      overflow-y: auto;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 10px;
-      margin-bottom: 10px;
-      text-align: left;
-      background: #fafafa;
-    }
-
-    .chat-message {
-      margin: 5px 0;
-      padding: 8px;
-      border-radius: 6px;
-    }
-    .chat-user {
-      background: #e1f5fe;
-    }
-    .chat-admin {
-      background: #c8e6c9;
-    }
-    .timestamp {
-      font-size: 12px;
-      color: #666;
-      margin-top: 4px;
-    }
-
-    #chatInput {
-      width: 95%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      margin-bottom: 10px;
-    }
-
-    .modal-content button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      margin: 5px 0;
-    }
-
-    .modal-content button:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <div id="chatModal" class="modal-overlay">
-    <div class="modal-content">
-      <h2>Chat with Us</h2>
-      <div id="chatMessages"></div>
-      <input type="text" id="chatInput" placeholder="Type your message...">
-      <button onclick="sendChat()">Send</button>
-      <button onclick="goHome()">Close</button>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Chat - AGORI Academic Clinic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/css/chat.css" />
+  </head>
+  <body>
+    <div id="chatModal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Chat with Us</h2>
+        <div id="chatMessages"></div>
+        <input type="text" id="chatInput" placeholder="Type your message..." />
+        <button onclick="sendChat()">Send</button>
+        <button onclick="goHome()">Close</button>
+      </div>
     </div>
-  </div>
 
-<script type="module">
-  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+    
+    <script type="module" src="javascript/chat.js"></script>
 
-  const supabase = createClient(
-    "https://fomowfqnswrsvuwzxmix.supabase.co",
-    "sb_publishable_gB87Pwod8O3jMTAqixq4TQ_fqJKGVb1"
-  );
-
-  let currentSender = "Guest";
-  (async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    currentSender = user ? user.email : "Guest";
-    loadChat();
-  })();
-
-  // ✅ Send chat message
-  window.sendChat = async function() {
-    const message = document.getElementById('chatInput').value;
-    if (!message) return;
-
-    const { error } = await supabase.from("chats").insert({
-      sender: currentSender,
-      message: message
-    });
-
-    if (error) {
-      console.error("Error sending message:", error.message);
-    } else {
-      document.getElementById('chatInput').value = "";
-    }
-  };
-
-  // ✅ Load chat messages (only current user + admin)
-  async function loadChat() {
-    const { data, error } = await supabase
-      .from("chats")
-      .select("*")
-      .in("sender", [currentSender, "Admin"])
-      .order("created_at", { ascending: true });
-
-    if (error) {
-      console.error("Error loading chat:", error.message);
-      return;
-    }
-    renderMessages(data);
-  }
-
-  // ✅ Subscribe realtime (filter inside callback)
-  supabase.channel("chat-room")
-    .on("postgres_changes", { event: "INSERT", schema: "public", table: "chats" }, (payload) => {
-      const newMessage = payload.new;
-      if (newMessage.sender === currentSender || newMessage.sender === "Admin") {
-        appendMessage(newMessage);
-      }
-    })
-    .on("postgres_changes", { event: "DELETE", schema: "public", table: "chats" }, () => loadChat())
-    .on("postgres_changes", { event: "UPDATE", schema: "public", table: "chats" }, () => loadChat())
-    .subscribe();
-
-  // ✅ Render messages
-  function renderMessages(messages) {
-    const chatBox = document.getElementById("chatMessages");
-    chatBox.innerHTML = "";
-    messages.forEach(msg => appendMessage(msg));
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  function appendMessage(msg) {
-    const chatBox = document.getElementById("chatMessages");
-    const div = document.createElement("div");
-    div.className = "chat-message " + (msg.sender === "Admin" ? "chat-admin" : "chat-user");
-
-    const timestamp = new Date(msg.created_at).toLocaleString();
-
-    div.innerHTML = `<strong>${msg.sender}:</strong> ${msg.message}
-      <div class="timestamp">${timestamp}</div>`;
-
-    // User can reply to admin messages
-    if (msg.sender === "Admin") {
-      div.innerHTML += `<button onclick="replyTo('${msg.id}', '${msg.sender}')">Reply</button>`;
-    }
-
-    // User can delete their own messages
-    if (msg.sender === currentSender) {
-      div.innerHTML += `<button onclick="deleteMessage('${msg.id}')">Delete</button>`;
-    }
-
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  // ✅ Reply (prefill input)
-  window.replyTo = function(messageId, sender) {
-    document.getElementById("chatInput").value = `@${sender} `;
-    document.getElementById("chatInput").focus();
-  };
-
-  // ✅ Delete user message
-  window.deleteMessage = async function(id) {
-    if (!confirm("Delete this message?")) return;
-    const { error } = await supabase.from("chats").delete().eq("id", id);
-    if (error) console.error("Error deleting:", error.message);
-    else loadChat();
-  };
-
-  // ✅ Close chat
-  window.goHome = function() {
-    window.location.href = "index.html";
-  };
-</script>
-</body>
+   
+  </body>
 </html>

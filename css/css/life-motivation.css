@@ -1,0 +1,106 @@
+ body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      header {
+        background: #28a745;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+      }
+      .life-motivation {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        flex-grow: 1;
+      }
+      .motivation-box {
+        background: linear-gradient(135deg, #28a745, #85e085);
+        color: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      }
+      .motivation-box h2 {
+        margin-bottom: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+      }
+      .motivation-box ul {
+        list-style-type: disc;
+        padding-left: 20px;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+      footer {
+        background: #f1f1f1;
+        padding: 12px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        border-top: 3px solid #28a745;
+        flex-wrap: wrap;
+      }
+      footer a {
+        background: #28a745;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s ease;
+        cursor: pointer;
+      }
+      footer a:hover {
+        background: #1e7e34;
+      }
+      footer p {
+        margin-left: auto;
+        font-size: 12px;
+        color: #333;
+      }
+
+      /* ✅ Mobile adjustments */
+      @media (max-width: 600px) {
+        header {
+          font-size: 20px;
+          padding: 12px;
+        }
+        .life-motivation {
+          padding: 15px;
+          gap: 15px;
+        }
+        .motivation-box {
+          padding: 15px;
+        }
+        .motivation-box h2 {
+          font-size: 18px;
+        }
+        .motivation-box ul {
+          font-size: 15px;
+          line-height: 1.4;
+        }
+        footer {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        footer a {
+          margin-bottom: 8px;
+        }
+        footer p {
+          margin-left: 0;
+          font-size: 12px;
+        }
+      }
+   

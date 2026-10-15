@@ -1,4 +1,4 @@
-const CACHE_NAME = "agori-academic-clinic-v5";
+const CACHE_NAME = "agori-academic-clinic-v6";
 const BOOK_COVER_CACHE = "agori-book-covers-v1";
 const SUPABASE_STORAGE_ORIGIN = "https://fomowfqnswrsvuwzxmix.supabase.co";
 const APP_SHELL = [

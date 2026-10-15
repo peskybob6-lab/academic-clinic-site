@@ -1,0 +1,105 @@
+  body {
+        font-family: Arial, sans-serif;
+        background: #f4f6f9;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      header {
+        background: #007bff;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 22px;
+        font-weight: bold;
+      }
+      .daily-upgrade {
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+      }
+      .upgrade-box {
+        background: linear-gradient(135deg, #007bff, #00c6ff);
+        color: white;
+        padding: 20px;
+        border-radius: 12px;
+        max-width: 700px;
+        text-align: center;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+      }
+      .upgrade-box h2 {
+        margin-bottom: 10px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .upgrade-box p {
+        font-size: 16px;
+        line-height: 1.5;
+        font-style: italic;
+      }
+      footer {
+        background: #f1f1f1;
+        padding: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 3px solid #007bff;
+        flex-wrap: wrap;
+      }
+      footer a {
+        background: #007bff;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+        transition: background 0.3s ease;
+        cursor: pointer;
+      }
+      footer a:hover {
+        background: #0056b3;
+      }
+      footer p {
+        font-size: 12px;
+        color: #333;
+        margin: 0;
+      }
+
+      /* ✅ Mobile adjustments */
+      @media (max-width: 600px) {
+        header {
+          font-size: 20px;
+          padding: 12px;
+        }
+        .daily-upgrade {
+          padding: 15px;
+        }
+        .upgrade-box {
+          padding: 15px;
+        }
+        .upgrade-box h2 {
+          font-size: 18px;
+        }
+        .upgrade-box p {
+          font-size: 15px;
+          line-height: 1.4;
+        }
+        footer {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+        footer a {
+          margin-bottom: 8px;
+        }
+        footer p {
+          margin-left: 0;
+          font-size: 12px;
+        }
+      }
+    

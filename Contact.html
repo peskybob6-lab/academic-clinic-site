@@ -1,111 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Contact - AGORI Academic Clinic</title>
-   <!-- Viewport for mobile responsiveness -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-    }
-
-    /* Overlay background */
-    .contact-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 123, 255, 0.85); /* blue overlay */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-    }
-
-    /* Contact box */
-    .contact-content {
-      background: #fff;
-      padding: 30px;
-      border-radius: 12px;
-      width: 400px;
-      text-align: center;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.3);
-      animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from {opacity: 0; transform: scale(0.9);}
-      to {opacity: 1; transform: scale(1);}
-    }
-
-    .contact-content h2 {
-      margin-bottom: 20px;
-      color: #007bff;
-    }
-
-    .contact-item {
-      margin: 15px 0;
-      font-size: 16px;
-      color: #333;
-    }
-
-    .contact-item a {
-      color: #007bff;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .contact-item a:hover {
-      text-decoration: underline;
-    }
-
-    .availability {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #555;
-      font-style: italic;
-    }
-
-    .close-btn {
-      margin-top: 20px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      width: 100%;
-    }
-    .close-btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <!-- Contact Overlay -->
-  <div class="contact-overlay">
-    <div class="contact-content">
-      <h2>Contact Us</h2>
-      <div class="contact-item">
-        📱 WhatsApp: <a href="https://wa.me/2348136675245" target="_blank">08136675245</a>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Contact - AGORI Academic Clinic</title>
+    <!-- Viewport for mobile responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/css/contact.css" />
+   
+  </head>
+  <body>
+    <!-- Contact Overlay -->
+    <div class="contact-overlay">
+      <div class="contact-content">
+        <h2>Contact Us</h2>
+        <div class="contact-item">
+          📱 WhatsApp:
+          <a href="https://wa.me/2348136675245" target="_blank">08136675245</a>
+        </div>
+        <div class="contact-item">
+          📧 Email:
+          <a href="mailto:agoriacademic@gmail.com">agoriacademic@gmail.com</a>
+        </div>
+        <div class="availability">
+          ✅ Available 24/7 — we’re always here to help.
+        </div>
+        <button class="close-btn" onclick="goHome()">Back to Home</button>
       </div>
-      <div class="contact-item">
-        📧 Email: <a href="mailto:agoriacademic@gmail.com">agoriacademic@gmail.com</a>
-      </div>
-      <div class="availability">
-        ✅ Available 24/7 — we’re always here to help.
-      </div>
-      <button class="close-btn" onclick="goHome()">Back to Home</button>
     </div>
-  </div>
 
-  <script>
-    // Redirect back to home
-    function goHome() {
-      window.location.href = "index.html";
-    }
-  </script>
-</body>
+    <script type="module" src="javascript/contact.js"></script>
+  </body>
 </html>

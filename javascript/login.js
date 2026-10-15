@@ -1,12 +1,5 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-if ("serviceWorker" in navigator && window.location.protocol !== "file:") {
-  navigator.serviceWorker
-    .register("./sw.js", { updateViaCache: "none" })
-    .then((registration) => registration.update())
-    .catch((error) => console.error("Service worker update failed:", error));
-}
-
 const supabase = createClient(
   "https://fomowfqnswrsvuwzxmix.supabase.co",
   "sb_publishable_gB87Pwod8O3jMTAqixq4TQ_fqJKGVb1",

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Details</title>
+    <link rel="stylesheet" href="css/css/style.css" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #eef6ff 0%, #dfeeff 100%);
+        font-family: Arial, sans-serif;
+        padding: 24px;
+      }
+      .book-detail-card {
+        width: min(100%, 760px);
+        background: #ffffff;
+        border-radius: 22px;
+        box-shadow: 0 20px 50px rgba(13, 71, 161, 0.15);
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 280px 1fr;
+      }
+      .cover-section {
+        background: linear-gradient(180deg, #f1f7ff 0%, #edf5ff 100%);
+        padding: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .cover-image {
+        width: 100%;
+        max-width: 220px;
+        border-radius: 18px;
+        box-shadow: 0 16px 28px rgba(32, 83, 161, 0.18);
+        object-fit: cover;
+      }
+      .content-section {
+        padding: 32px 28px;
+      }
+      .book-tag {
+        display: inline-block;
+        background: #e7f0ff;
+        color: #0d47a1;
+        font-size: 12px;
+        font-weight: 700;
+        border-radius: 999px;
+        padding: 7px 12px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      h1 {
+        margin: 18px 0 12px;
+        font-size: clamp(26px, 4vw, 40px);
+        color: #0d1b2a;
+      }
+      .price {
+        font-size: 30px;
+        font-weight: 800;
+        color: #0d6efd;
+        margin-bottom: 20px;
+      }
+      .book-description {
+        color: #465366;
+        line-height: 1.7;
+        margin-bottom: 24px;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .primary-btn, .secondary-btn {
+        border: none;
+        border-radius: 12px;
+        padding: 14px 20px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .primary-btn {
+        background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+        color: white;
+        box-shadow: 0 12px 24px rgba(13, 110, 253, 0.25);
+      }
+      .secondary-btn {
+        background: #eef5ff;
+        color: #0d47a1;
+      }
+      .status {
+        margin-top: 16px;
+        color: #2563eb;
+        font-size: 14px;
+        font-weight: 700;
+      }
+      @media (max-width: 700px) {
+        .book-detail-card {
+          grid-template-columns: 1fr;
+        }
+        .cover-section {
+          padding-bottom: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="book-detail-card">
+      <div class="cover-section">
+        <img id="detailCover" class="cover-image" src="" alt="Book Cover" />
+      </div>
+      <div class="content-section">
+        <span class="book-tag">Featured Book</span>
+        <h1 id="detailTitle">Loading...</h1>
+        <div id="detailPrice" class="price">₦0</div>
+        <p id="detailDescription" class="book-description">Loading book details...</p>
+        <div class="actions">
+          <button id="buyNowBtn" class="primary-btn" type="button">Buy Now</button>
+          <a class="secondary-btn" href="index.html">Back to Books</a>
+        </div>
+        <div id="detailStatus" class="status"></div>
+      </div>
+    </div>
+
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+    <script type="module" src="javascript/book-details.js"></script>
+  </body>
+</html>
