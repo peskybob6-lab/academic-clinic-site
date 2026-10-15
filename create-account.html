@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Create Account - AGORI Academic Clinic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/css/create-account.css" />
+  </head>
+  <body>
+    <div id="registerModal" class="modal-overlay">
+      <div class="modal-content">
+        <span class="close-icon" onclick="goHome()">✖</span>
+        <h2>Create Account</h2>
+
+        <div id="registerSuccessMessage" class="register-success-message" aria-live="polite"></div>
+
+        <form id="registerForm" class="register-form" novalidate>
+          <div id="step1">
+            <input type="text" id="firstName" placeholder="First Name" required />
+            <button type="button" class="primary-btn" onclick="validateAndAdvance(2)">Next</button>
+          </div>
+
+          <div id="step2" style="display: none">
+            <input type="text" id="lastName" placeholder="Last Name" required />
+            <button type="button" class="primary-btn" onclick="validateAndAdvance(3)">Next</button>
+          </div>
+
+          <div id="step3" style="display: none">
+            <input type="tel" id="phone" placeholder="Phone Number" required />
+            <button type="button" class="primary-btn" onclick="validateAndAdvance(4)">Next</button>
+          </div>
+
+          <div id="step4" style="display: none">
+            <input type="password" id="password" placeholder="Password" required />
+            <button type="button" class="primary-btn" onclick="validateAndAdvance(5)">Next</button>
+          </div>
+
+          <div id="step5" style="display: none">
+            <input
+              type="password"
+              id="confirmPassword"
+              placeholder="Confirm Password"
+              required
+            />
+            <button type="button" class="primary-btn" onclick="validateAndAdvance(6)">Next</button>
+          </div>
+
+          <div id="step6" style="display: none">
+            <select id="gender" required>
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <button type="button" class="primary-btn create-account-btn" onclick="createAccount()">Create Account</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script type="module" src="javascript/create-account.js"></script>
+  </body>
+</html>

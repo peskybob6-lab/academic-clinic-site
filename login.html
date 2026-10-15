@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Login - AGORI Academic Clinic</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/css/login.css" />
+  </head>
+  <body>
+    <div id="loginModal" class="modal-overlay">
+      <div class="modal-content">
+        <span class="close-icon" onclick="goHome()">✖</span>
+        <h2>Login</h2>
+
+        <div id="loginSuccessMessage" class="login-success-message" aria-live="polite"></div>
+
+        <div id="loginFormSection" class="login-form-section">
+          <input type="tel" id="loginPhone" placeholder="Phone Number" />
+          <input type="password" id="loginPassword" placeholder="Password" />
+          <button class="primary-btn" onclick="loginAccount()">Login</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="javascript/login.js"></script>
+  </body>
+</html>
